@@ -1,4 +1,9 @@
 #!/usr/bin/python3
+# this file need be updated in /usr/bin/52pirgbfanled.py
+
+# runs from a service in: 
+# /etc/systemd/system/52pifanled.service
+
 # NeoPixel library strandtest example
 # Author: Tony DiCola (tony@tonydicola.com)
 #

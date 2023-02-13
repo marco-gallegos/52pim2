@@ -1,0 +1,9 @@
+[Unit]
+Description=fan rgb cooler systemd service.
+
+[Service]
+Type=simple
+ExecStart=/bin/python /usr/bin/52pirgbfanled.py -c
+
+[Install]
+WantedBy=multi-user.target
