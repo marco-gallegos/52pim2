@@ -25,6 +25,34 @@ LED_INVERT = False    # True to invert the signal (when using NPN transistor lev
 LED_CHANNEL = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
 
+myColors = [
+    {
+        "R": 119,
+        "G": 33,
+        "B": 111
+    },
+    {
+        "R": 100,
+        "G": 100,
+        "B": 0
+    },
+    {
+        "R": 250,
+        "G": 255,
+        "B": 255
+    },
+    {
+        "R": 100,
+        "G": 100,
+        "B": 100
+    },
+    {
+        "R": 44,
+        "G": 0,
+        "B": 30
+    },
+]
+
 # Define functions which animate LEDs in various ways.
 def colorWipe(strip, color, wait_ms=50):
     """Wipe color across display a pixel at a time."""
@@ -51,15 +79,19 @@ def rainbowCycle(strip, wait_ms=20, iterations=5):
     """Draw rainbow that uniformly distributes itself across all pixels."""
     for j in range(256 * iterations):
         for i in range(strip.numPixels()):
-            print(strip.numPixels())
+            # print(strip.numPixels())
             strip.setPixelColor(i, wheel(
                 (int(i * 256 / strip.numPixels()) + j) & 255))
         strip.show()
         time.sleep(wait_ms / 1000.0)
 
-def MyColorCycle(strip, wait, iterations):
-    pass
-
+def MyColorCycle(strip, wait):
+    for my_color in myColors:
+        for pixel in range(strip.numPixels()):
+            strip.setPixelColor(pixel,Color(my_color["R"], my_color["G"], my_color["B"]))
+            strip.show()
+            time.sleep(1)
+        time.sleep(wait)
 
 # Main program logic follows:
 if __name__ == '__main__':
@@ -81,7 +113,8 @@ if __name__ == '__main__':
 
         while True:
             print('Color wipe animations.')
-            rainbowCycle(strip, wait_ms=50, iterations=1)
+            # rainbowCycle(strip, wait_ms=50, iterations=1)
+            MyColorCycle(strip, wait=1)
 
     except KeyboardInterrupt:
         if args.clear:
