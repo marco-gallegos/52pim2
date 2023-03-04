@@ -85,13 +85,33 @@ def rainbowCycle(strip, wait_ms=20, iterations=5):
         strip.show()
         time.sleep(wait_ms / 1000.0)
 
-def MyColorCycle(strip, wait):
-    for my_color in myColors:
-        for pixel in range(strip.numPixels()):
-            strip.setPixelColor(pixel,Color(my_color["R"], my_color["G"], my_color["B"]))
+
+def spinColor(strip, wait, color):
+    init_time = time.time()
+    current_time = time.time()
+    number_of_pixels = int(strip.numPixels()/4)
+    
+    print(number_of_pixels)
+
+    while current_time - init_time <= wait:
+        for pixel in range(number_of_pixels):
+            strip.setPixelColor(pixel, Color(0, 0, 0))
+
+            # turn of led behind to make this look like a clock
+            pixel_back = pixel - 1 if pixel > 1 else number_of_pixels - pixel
+            strip.setPixelColor(pixel_back,  Color(color["R"], color["G"], color["B"]))
+            
+            pixel_front = pixel - 2 if pixel > 2 else number_of_pixels - (pixel + 1)
+            strip.setPixelColor(pixel_front,  Color(color["R"], color["G"], color["B"]))
+
             strip.show()
             time.sleep(1)
-        time.sleep(wait)
+        current_time = time.time()
+
+
+def MyColorCycle(strip, wait):
+    for my_color in myColors:
+        spinColor(strip, wait, my_color)
 
 # Main program logic follows:
 if __name__ == '__main__':
@@ -114,8 +134,8 @@ if __name__ == '__main__':
         while True:
             print('Color wipe animations.')
             # rainbowCycle(strip, wait_ms=50, iterations=1)
-            MyColorCycle(strip, wait=1)
+            MyColorCycle(strip, wait=10)
 
     except KeyboardInterrupt:
         if args.clear:
-            colorWipe(strip, Color(0, 0, 0), 10)
+            colorWipe(strip, Color(0, 0, 0), 10000000)
